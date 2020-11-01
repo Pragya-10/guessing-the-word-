@@ -1,0 +1,89 @@
+from tkinter import *
+from tkinter.ttk import Separator
+import random,sys,os
+
+words = ['python','lpu','punjab','ipl','csk','india','tajmahal']
+root = Tk()
+root.title("Word Guessing Game")
+root.geometry("800x600")
+try:
+    root.wm_iconbitmap('math.ico')
+except:
+    pass
+root.resizable(0,0)
+root.config(bg='RoyalBlue1')
+chance = 5
+score = 0
+def _exit():
+    root.destroy()
+
+def game(event):
+    global chance,score
+    myWord = random.choice(words)
+    urWord = word.get()
+    if chance>0 and myWord == urWord:
+        resultCheck.config(text="Congrats! You Won ")
+        score +=10
+        scoreLabel.config(text="Score {}".format(score))    
+    elif chance == 0:
+        resultCheck.config(text="Game Over")
+        scoreLabel.config(text="Highest Score {}".format(score))
+        playAgain.config(bg='red',text="Play Again",state='normal')
+    #check chance left
+    else:
+        chance-=1
+        chanceLeft.config(text="Chance left {}".format(chance))
+        resultCheck.config(text="Try Again..")        
+        
+def reset():
+    global chance,score
+    #python = sys.executable
+    #os.execl(python,python,*sys.argv)
+    chance =5
+    score =0
+    resultCheck.config(text="")
+    scoreLabel.config(text="Score: 0")
+    chanceLeft.config(text="Chance left:  {}".format(chance))
+    playAgain.config(bg='RoyalBlue1',text="",state='disabled')
+#app Name =========================================   
+appName = Label(root,text="Guessing Word game",
+                font=('impact',30,'underline'),relief=RIDGE,borderwidth=2,
+                bg="Blue1",fg='red')
+appName.pack(ipady=20,fill=BOTH)
+#Horizonta line separator
+Separator().pack(fill='x')
+#===================================
+title = Label(root,text="Guess a Word ",
+              font=('arial',25,'bold'),bg='RoyalBlue1',fg='OliveDrab1')
+title.pack()
+#===========choices========================
+choices = Label(root,text="choices: {}".format(words),fg='ivory2',
+                relief=SUNKEN,font=('arial',15,'bold'),bg='RoyalBlue1')
+choices.pack(ipady=10)
+
+#=========score label=================================
+scoreLabel = Label(root,text="Score 0",font=('arial',10,'bold')
+               ,bg='RoyalBlue1')
+scoreLabel.pack(anchor=E,padx=5)
+#===============chance left===================================
+chanceLeft = Label(root,text="Chance left:  {}".format(chance),
+                   font=('arial',10,'bold'),fg='maroon',bg='RoyalBlue1')
+chanceLeft.place(x=5,y=200)
+#===============entry box to enter ur guess=====================
+word = Entry(root,width=50)
+word.pack(pady=25)
+#bind word entry to enter button
+word.bind('<Return>',game)
+#============== label to show win or loss====================
+resultCheck = Label(root,text="type ur guess and hit Enter",
+                    font=('forte',15),fg='brown4',bg='RoyalBlue1')
+resultCheck.pack( )
+#=============== restart game ==========================
+playAgain = Button(root,text="",fg='white',bd=0,bg='RoyalBlue1',width=20,
+                   command=reset,state='disabled')
+playAgain.pack()
+#================game exit button========================
+exitGame = Button(root,text="Quit",fg='white',bg='black',width=20,command=_exit)
+exitGame.pack(anchor=E)
+#=================== run program ===============================
+  root.mainloop()
